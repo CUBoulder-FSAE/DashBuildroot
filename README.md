@@ -1,2 +1,2 @@
-# DashYocto
-Our copy of the TI SDK for the BeaglePlay
+# DashBuildroot
+Buildroot repo that contains the build system for our custom packages.
