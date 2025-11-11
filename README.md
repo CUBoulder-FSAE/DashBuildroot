@@ -4,6 +4,11 @@ Buildroot repo that contains the build system for our custom packages.
 ### Build Base Beagleplay
 
 ```bash
+
+# Upon first cloning the repo
+git submodule update --init recursive
+
+# Everytime when building
 cd buildroot
 make beagleplay_defconfig
 make
