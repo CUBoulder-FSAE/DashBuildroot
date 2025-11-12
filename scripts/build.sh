@@ -12,13 +12,13 @@ BUILD_DIR="$(pwd)/build"
 # Create the build dir
 mkdir -p "BUILD_DIR"
 
-# run savedefconfig command do save changes from menuconfig
+
 echo "Running menuconfig"
 pushd $BR_DIR > /dev/null
-# Run defconfig first before menuconfig so it modifies the correct config
+# Run the defconfig pointing to our config
 make BR2_EXTERNAL="$BR2_EXTERNAL" $DEFCONFIG_NAME
 
-# Build
+# Build command
 make
 popd > /dev/null
 
