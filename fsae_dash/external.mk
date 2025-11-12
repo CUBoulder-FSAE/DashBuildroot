@@ -1,0 +1,1 @@
+include $(sort $(wildcard $(BR2_EXTERNAL_FSAE_DASH_PATH)/package/*/*.mk))

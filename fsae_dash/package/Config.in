@@ -1,0 +1,4 @@
+config BR2_PACKAGE_FSAE_DASH
+    bool "FSAE Dash Custom Package"
+    help
+        Include fsae dash applications
