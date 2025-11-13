@@ -13,6 +13,7 @@ on:
       - 'fsae_dash/configs/**'
       - 'fsae_dash/board/**'
       - 'fsae_dash/package/**'
+  workflow_dispatch:
 
 jobs:
   buildroot-sdk:
