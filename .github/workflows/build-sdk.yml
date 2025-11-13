@@ -1,4 +1,4 @@
-name: Buildroot SDK generator
+name: Buildroot Image Generator
 
 on:
   push:
@@ -25,13 +25,19 @@ jobs:
       with:
         submodules: true
 
+    - name: Move repo to /mnt
+      run: |
+        mkdir -p /mnt/buildroot
+        cp -r . /mnt/buildroot
+        cd /mnt/buildroot
+
     - name: Cache Buildroot output
       uses: actions/cache@v3
       with:
         path: |
-          buildroot/output/host
-          buildroot/output/build
-          buildroot/output/downloads
+          /mnt/buildroot/output/host
+          /mnt/buildroot/output/build
+          /mnt/buildroot/output/downloads
         key: ${{ runner.os }}-buildroot-${{ hashFiles('fsae_dash/configs/**', 'fsae_dash/board/**', 'fsae_dash/package/**') }}
         restore-keys: |
           ${{ runner.os }}-buildroot-
@@ -45,24 +51,20 @@ jobs:
           libssl-dev file gawk diffutils ca-certificates \
           python3
 
-    - name: Build Image
+    - name: Build Images
       run: |
         chmod +x scripts/build.sh
         scripts/build.sh
-
-    - name: Build SDK
-      run: |
-        chmod +x scripts/build.sh
         scripts/build.sh sdk
 
     - name: Upload SD Card Image
       uses: actions/upload-artifact@v4
       with:
         name: sdcard.img
-        path: buildroot/output/image/sdcard.img
+        path: /mnt/buildroot/output/image/sdcard.img
 
     - name: Upload SDK artifact
       uses: actions/upload-artifact@v4
       with:
         name: buildroot-sdk
-        path: buildroot/output/images/*_sdk-buildroot.tar.gz
+        path: /mnt/buildroot/output/images/*_sdk-buildroot.tar.gz
