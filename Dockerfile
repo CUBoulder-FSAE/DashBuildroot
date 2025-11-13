@@ -18,7 +18,3 @@ RUN useradd -ms /bin/bash buildroot \
     && echo "buildroot ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 USER buildroot
-WORKDIR /home/buildroot
-
-# Mount your project repo here when running the container
-VOLUME ["/home/buildroot/work"]

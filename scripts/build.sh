@@ -25,7 +25,6 @@ if [ "${BUILD_SDK}" = "sdk" ]; then
 else
     make -j$(nproc)
     cp "$BUILDROOT_DIR/output/images/"*.img "$CUSTOM_OUTPUT_DIR" || true
-    cp "$BUILDROOT_DIR/output/images/"*.tar.gz "$CUSTOM_OUTPUT_DIR" || true
 fi
 
 popd > /dev/null

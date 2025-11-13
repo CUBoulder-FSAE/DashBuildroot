@@ -1,0 +1,67 @@
+name: Buildroot SDK generator
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'fsae_dash/configs/**'
+      - 'fsae_dash/board/**'
+      - 'fsae_dash/package/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'fsae_dash/configs/**'
+      - 'fsae_dash/board/**'
+      - 'fsae_dash/package/**'
+
+jobs:
+  buildroot-sdk:
+    runs-on: ubuntu-24.04
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        submodules: true
+
+    - name: Cache Buildroot output
+      uses: actions/cache@v3
+      with:
+        path: |
+          buildroot/output/host
+          buildroot/output/build
+          buildroot/output/downloads
+        key: ${{ runner.os }}-buildroot-${{ hashFiles('fsae_dash/configs/**', 'fsae_dash/board/**', 'fsae_dash/package/**') }}
+        restore-keys: |
+          ${{ runner.os }}-buildroot-
+
+    - name: Install Buildroot dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+          build-essential git wget unzip xz-utils bc cpio \
+          rsync patch ncurses-dev bison flex gettext \
+          libssl-dev file gawk diffutils ca-certificates \
+          python3
+
+    - name: Build Image
+      run: |
+        chmod +x scripts/build.sh
+        scripts/build.sh
+
+    - name: Build SDK
+      run: |
+        chmod +x scripts/build.sh
+        scripts/build.sh sdk
+
+    - name: Upload SD Card Image
+      uses: actions/upload-artifact@v4
+      with:
+        name: sdcard.img
+        path: buildroot/output/image/sdcard.img
+
+    - name: Upload SDK artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: buildroot-sdk
+        path: buildroot/output/images/*_sdk-buildroot.tar.gz
