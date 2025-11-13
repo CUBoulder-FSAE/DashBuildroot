@@ -25,19 +25,20 @@ jobs:
       with:
         submodules: true
 
-    - name: Move repo to /mnt
+    - name: Move repo to /tmp
       run: |
-        mkdir -p /mnt/buildroot
-        cp -r . /mnt/buildroot
-        cd /mnt/buildroot
+        df -h
+        mkdir -p /tmp/buildroot
+        cp -r . /tmp/buildroot
+        cd /tmp/buildroot
 
     - name: Cache Buildroot output
       uses: actions/cache@v3
       with:
         path: |
-          /mnt/buildroot/output/host
-          /mnt/buildroot/output/build
-          /mnt/buildroot/output/downloads
+          /tmp/buildroot/output/host
+          /tmp/buildroot/output/build
+          /tmp/buildroot/output/downloads
         key: ${{ runner.os }}-buildroot-${{ hashFiles('fsae_dash/configs/**', 'fsae_dash/board/**', 'fsae_dash/package/**') }}
         restore-keys: |
           ${{ runner.os }}-buildroot-
@@ -61,10 +62,10 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: sdcard.img
-        path: /mnt/buildroot/output/image/sdcard.img
+        path: /tmp/buildroot/output/image/sdcard.img
 
     - name: Upload SDK artifact
       uses: actions/upload-artifact@v4
       with:
         name: buildroot-sdk
-        path: /mnt/buildroot/output/images/*_sdk-buildroot.tar.gz
+        path: /tmp/buildroot/output/images/*_sdk-buildroot.tar.gz
