@@ -1,0 +1,29 @@
+#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides:          wifi_ap
+# Required-Start:    $network
+# Required-Stop:
+# Default-Start:     2 3 4 5
+# Default-Stop:
+# Short-Description: Start Wi-Fi access point
+### END INIT INFO
+
+case "$1" in
+start)
+    modprobe wl18xx_sdio
+    sleep 1
+
+    ip link set wlan0 up
+    hostapd -B /etc/hostapd/hostapd.conf
+    dnsmasq -C /etc/dnsmasq.conf
+    ;;
+stop)
+    killall hostapd dnsmasq
+    ;;
+*)
+    echo "Usage: $0 {start|stop}"
+    ;;
+esac
+
+exit 0

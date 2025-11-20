@@ -25,6 +25,7 @@ if [ "${BUILD_SDK}" = "sdk" ]; then
 else
     make -j$(nproc)
     cp "$BR_DIR/output/images/sdcard.img" "$BUILD_DIR" || true
+    cp "$BR_DIR/output/images/rootfs.ext4" "$BUILD_DIR" || true
 fi
 
 popd > /dev/null
