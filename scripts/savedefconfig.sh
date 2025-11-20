@@ -5,6 +5,7 @@ set -e
 BR_DIR="$(pwd)/buildroot"
 BR2_EXTERNAL="$(pwd)/fsae_dash"
 DEFCONFIG_NAME="fsae_dash_defconfig"
+# KERNEL_DIR=$BR_DIR/buildroot/output/build/linux-6.10/defconfig
 
 # run savedefconfig command do save changes from menuconfig
 echo "Running savedefconfig"
